@@ -1,3 +1,4 @@
+require('./tracer')('dreamcatcher');
 const express = require("express");
 const logger = require("morgan");
 const Url = require("url");

@@ -18,9 +18,11 @@ RUN apt-get update \
 ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init
 
-COPY server.js start.js browserManager.js helpers.js package.json package-lock.json /app/
-COPY /fonts /usr/share/fonts/
+COPY package.json package-lock.json /app/
 WORKDIR /app
 RUN npm install
+
+COPY server.js start.js browserManager.js helpers.js tracer.js /app/
+COPY /fonts /usr/share/fonts/
 
 ENTRYPOINT ["dumb-init", "--", "npm", "start"]
