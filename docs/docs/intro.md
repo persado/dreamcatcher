@@ -1,35 +1,17 @@
 ---
 sidebar_position: 1
+title: Introduction
 ---
 
-# Tutorial Intro
+Dreamcatcher is a service that provides a lightweight API for
+generating JPEG/PNG and PDF representations of a web page, using
+headless Chrome and [Puppeteer](https://pptr.dev/).
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Dreamcatcher is written in node.js and is MIT licensed.
 
-## Getting Started
+The project was written for the needs of <a href="https://www.persado.com">Persado</a> ― we design and
+deploy multiple campaigns per day and needed a quick way for
+our front end developers to deploy previews in multiple ways
+(images, PDFs) as well as final assets. We also use it extensively
+to generate PDFs of reports and other internal material.
 
-Get started by **creating a new site**.
-
-Or **try Docusaurus immediately** with **[new.docusaurus.io](https://new.docusaurus.io)**.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**:
-
-```shell
-npx @docusaurus/init@latest init my-website classic
-```
-
-## Start your site
-
-Run the development server:
-
-```shell
-cd my-website
-
-npx docusaurus start
-```
-
-Your site starts at `http://localhost:3000`.
-
-Open `docs/intro.md` and edit some lines: the site **reloads automatically** and display your changes.

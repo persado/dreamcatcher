@@ -12,12 +12,22 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">
+          Dreamcatcher is a service that provides a lightweight API for
+          generating JPEG/PNG and PDF representations of a web page, using
+          headless Chrome and Puppeteer.
+        </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
             to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
+            Introduction
+          </Link>
+          &nbsp;
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/quick_start">
+            Quick Start
           </Link>
         </div>
       </div>
@@ -29,12 +39,9 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={siteConfig.title}
+      description="Dreamcatcher web page image / PDF snapshot service">
       <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-      </main>
     </Layout>
   );
 }
