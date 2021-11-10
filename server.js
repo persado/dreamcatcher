@@ -1,6 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const Url = require("url");
+const fs = require('fs')
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const Sentry = require("@sentry/node");
@@ -38,8 +39,11 @@ const commonSetup = async (page, options) => {
 };
 
 const screenshotTask = async ({ page, data: {options, format}}) => {
+  log('commonSetup');
   await commonSetup(page, options);
+  log('prepareContent');
   await prepareContent(page, options);
+  log('prepareContentDone');
 
   if (format === 'pdf') {
     return await capturePdf(page, options);
@@ -69,15 +73,24 @@ const app = express();
 (async () => {
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
-    maxConcurrency: process.env.CONCURRENCY || 15,
+    maxConcurrency: process.env.CONCURRENCY ? parseInt(process.env.CONCURRENCY) : 15,
     monitor: process.env.MONITOR ? true : false,
     puppeteerOptions: {
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage"
+        "--disable-dev-shm-usage",
+        "--disable-web-security",
       ],
     },
+  });
+
+  cluster.on('taskerror', (err, data, willRetry) => {
+    if (willRetry) {
+      log(`Encountered an error while crawling ${data}. ${err.message}\nThis job will be retried`);
+    } else {
+      log(`Failed to crawl ${data}: ${err.message}`);
+    }
   });
 
   if (useSentry) app.use(Sentry.Handlers.requestHandler());
@@ -121,6 +134,15 @@ const app = express();
         }
       }
       res.send(payload);
+
+      console.log(`Deleting file /tmp/dc-${options.uuid}.html`);
+      fs.unlink(`/tmp/dc-${options.uuid}.html`, (err) => {
+        if (err) {
+          console.log('No file to delete');
+        } else {
+          console.log("File is deleted.");
+        }
+      });
     } catch (e) {
       if (useSentry) Sentry.captureException(e);
       handleError(e, res, Sentry);

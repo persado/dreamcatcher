@@ -1,4 +1,6 @@
 const { defaultsDeep, merge, isNull, mapValues, pick } = require("lodash");
+const fs = require('fs')
+const { v4: uuidv4 } = require('uuid');
 
 const defaultOptions = {
   headers: {},
@@ -21,7 +23,7 @@ const log = (message) => {
 const prepareOptions = reqBody => {
   const body = mapValues(reqBody, val => (isNull(val) ? undefined : val));
   const options = defaultsDeep(body, defaultOptions);
-  return options;
+  return {uuid: uuidv4(), ...options};
 };
 
 const wait = async (page, options) => {
@@ -33,7 +35,9 @@ const wait = async (page, options) => {
     if (parseInt(condition)) {
       await page.waitForTimeout(parseInt(condition));
     }else{
+      console.log('waiting for condition', condition);
       await page.waitForSelector(condition, { timeout: options.waitTimeout });
+      console.log('done waiting for condition', condition);
     }
   }
 };
@@ -42,8 +46,16 @@ const prepareContent = async (page, options) => {
   const waitUntil = options.waitForIdle ? "networkidle0" : "load";
   const gotoOptions = { timeout: options.waitTimeout, waitUntil };
 
+  log(JSON.stringify(gotoOptions));
   if (options.htmlContent) {
-    await page.setContent(options.htmlContent, gotoOptions);
+    const tmpPath = `/tmp/dc-${options.uuid}.html`;
+    fs.writeFileSync(tmpPath, options.htmlContent);
+    console.log(`navigating to file://${tmpPath}`);
+    log('page.goto:')
+    await page.goto(`file://${tmpPath}`, gotoOptions);
+    log('page.goto done')
+
+    // await page.setContent(options.htmlContent, gotoOptions);
   } else {
     log(`Navigating to ${options.url}`);
     await page.goto(options.url, gotoOptions);
