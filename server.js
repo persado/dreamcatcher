@@ -3,6 +3,7 @@ const logger = require("morgan");
 const Url = require("url");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const retry = require('async-retry');
 const Sentry = require("@sentry/node");
 const { Cluster } = require('puppeteer-cluster');
 const {
@@ -18,6 +19,8 @@ const {
 
 const useSentry = !!process.env.SENTRY_DSN;
 if (useSentry) Sentry.init({ dsn: process.env.SENTRY_DSN });
+
+const MAX_RETRIES_WHEN_ERROR = 3;
 
 const commonSetup = async (page, options) => {
   if (process.env.ALLOW_PRIVATE_NETWORKS !== 'true') {
@@ -105,9 +108,21 @@ const app = express();
 
     try {
       const options = prepareOptions(req.body);
-      const payload = await cluster.execute(
-        {options, format: req.params.format},
-        screenshotTask
+      const payload = await retry(
+        async () => {
+          return await cluster.execute(
+            {options, format: req.params.format},
+            screenshotTask
+          );
+        },
+        {
+          retries: MAX_RETRIES_WHEN_ERROR,
+          onRetry: (error) => {
+            log('Error during screenshot task:')
+            log(error.stack);
+            if (useSentry) Sentry.captureException(error);
+          }
+        }
       );
 
       if (req.params.format == 'pdf') {
@@ -123,6 +138,7 @@ const app = express();
       }
       res.send(payload);
     } catch (e) {
+      log('Error during screenshot task, bailed:')
       if (useSentry) Sentry.captureException(e);
       handleError(e, res, Sentry);
     }
