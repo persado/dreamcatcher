@@ -6,7 +6,6 @@ module.exports = {
   baseUrl: '/dreamcatcher/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
   organizationName: 'persado', // Usually your GitHub org/user name.
   projectName: 'dreamcatcher', // Usually your repo name.
   themeConfig: {
@@ -14,7 +13,7 @@ module.exports = {
       title: 'Dreamcatcher',
       logo: {
         alt: 'Dreamcatcher',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
       },
       items: [
         {
@@ -44,7 +43,7 @@ module.exports = {
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright © ${new Date().getFullYear()} Persado, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © 2022 Persado, Inc. Docs built with <a href="https://docusaurus.io/" target="_blank">Docusaurus</a>. Icon by <a href="https://www.freepik.com" title="Freepik" target="_blank">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">FlatIcon.com</a>.`,
     },
   },
   presets: [
