@@ -21,7 +21,7 @@
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "on-finished": "^2.3.0",
-    "puppeteer": "^10.4.0",
+    "puppeteer": "^13.4.1",
     "puppeteer-cluster": "^0.22.0",
     "url": "^0.11.0"
   },

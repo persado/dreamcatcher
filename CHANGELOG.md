@@ -1,5 +1,7 @@
 ## [unreleased]
 
+ * Updated puppeteer from 10.4.0 to 13.1.3. Brings bundled chromium from v93 up to v98.
+ * Update package-lock lockfileVersion to 2 from 1
 
 ## [2.0.1]
 
