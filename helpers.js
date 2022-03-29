@@ -9,6 +9,7 @@ const defaultOptions = {
   waitFor: [],
   waitTimeout: 60000,
   imageType: "png",
+  omitBackground: false,
   imageQuality: 90,
   scaleFactor: 2,
 };
@@ -129,6 +130,7 @@ const captureImage = async (page, options) => {
   let imageOptions = {
     clip: options.clipArea,
     type: options.imageType,
+    omitBackground: options.omitBackground,
   };
 
   let jpgOptions = {

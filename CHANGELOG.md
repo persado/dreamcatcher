@@ -1,5 +1,5 @@
 ## [unreleased]
-
+ * Add omitBackground option for capturing PNGs with transparency.
 
 ## [2.0.1]
 

@@ -22,6 +22,7 @@ id: export
 - **waitTimeout:** INTEGER (Default: `30000`) - Maximum number of milliseconds to wait for succesful navigation and for any conditions specified in `waitFor` (non-cumulative) before returning an error response.
 - **waitForIdle:** BOOLEAN (Default: `false`) - Whether to consider navigation successful only once all network connections have been closed for at least 500 ms, rather than once the browser's `load` event has been fired. Useful for capturing single-page applications where the load event may not be a reliable indicator of page readiness.
 - **imageType:** STRING (Default: `png`; Image only) - The type of image you would like to export. Available options are `jpeg`, `png`, `webp`.
+- **omitBackground:** BOOLEAN (Default: `false`; Png only) - Whether or not to enable transparency for a png capture. Only _actively_ applies transparency to the body if the background-color isn't already set on it.
 - **imageQuality:** INTEGER (Default: `100`; Image with type of `jpeg` only) - Available range is 0-100. Only applies when requesting a `jpeg` image.
 - **scaleFactor:** INTEGER (Default: `2`) - the device scaling factor for images. By default Dreamcatcher generates images with scale factor 2, suitable for retina / high DPI displays.
 - **emulateMediaType:** ?STRING (Default: `undefined`) - if this is set, it will be passed to Puppeteer before printing. Valid values: `screen`, `print`.
