@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const retry = require('async-retry');
 const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
 const { Cluster } = require('puppeteer-cluster');
 const {
   log,
@@ -17,8 +18,6 @@ const {
   isPrivateNetwork,
 } = require("./helpers");
 
-const useSentry = !!process.env.SENTRY_DSN;
-if (useSentry) Sentry.init({ dsn: process.env.SENTRY_DSN });
 
 const MAX_RETRIES_WHEN_ERROR = 3;
 
@@ -41,14 +40,27 @@ const commonSetup = async (page, options) => {
 };
 
 const screenshotTask = async ({ page, data: {options, format}}) => {
+  var transaction;
+  if (useSentry) {
+    transaction = Sentry.startTransaction({
+      op: 'screenshot',
+      name: `screenshot-${format}`,
+    });
+  }
+
   await commonSetup(page, options);
   await prepareContent(page, options);
 
+  let result;
   if (format === 'pdf') {
-    return await capturePdf(page, options);
+    result = await capturePdf(page, options);
   } else {
-    return await captureImage(page, options);
+    result = await captureImage(page, options);
   }
+  if (useSentry) {
+    transaction.finish();
+  }
+  return result;
 };
 
 const performanceTask = async ({ page, data: {options}}) => {
@@ -69,6 +81,17 @@ const allowCrossDomain = (req, res, next) => {
 
 const app = express();
 
+const useSentry = !!process.env.SENTRY_DSN;
+if (useSentry) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [
+      new Tracing.Integrations.Express({app}),
+    ],
+    tracesSampleRate: (process.env.SENTRY_TRACES_SAMPLE_RATE ? parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE) : 0),
+  });
+}
+
 (async () => {
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
@@ -85,6 +108,7 @@ const app = express();
   });
 
   if (useSentry) app.use(Sentry.Handlers.requestHandler());
+
   if (!process.env.MONITOR) {
     app.use(logger('[:date[iso]] :remote-addr ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms', {
       skip: (req, res) => req.path === '/status'
@@ -94,7 +118,8 @@ const app = express();
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(allowCrossDomain);
-  if (useSentry) app.use(Sentry.Handlers.errorHandler());
+
+  if (useSentry) app.use(Sentry.Handlers.tracingHandler());
 
   app.get("/status", function(req, res) {
     res.type("text/plain");
@@ -159,6 +184,8 @@ const app = express();
       handleError(e, res, Sentry);
     }
   });
+
+  if (useSentry) app.use(Sentry.Handlers.errorHandler());
 
 })();
 
