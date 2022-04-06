@@ -29,7 +29,7 @@ it('should get a pdf document representation of provided html', (done) => {
       expect(res).to.have.status(200);
 
       expect(res.type).to.equal('application/pdf');
-      expect(parseInt(res.headers['content-length'])).to.be.greaterThan(4000);
+      expect(res.body.length).to.be.greaterThan(5000);
       done();
     });
 });

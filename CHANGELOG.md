@@ -4,6 +4,7 @@
  * Updated @sentry/node package to 6.19.4; added @sentry/tracing.
  * Updated package-lock lockFileVersion to 2
  * Updated to puppeteer 13.5.2 and puppeteer-cluster 0.23.0
+ * Changed PDF capture to use a stream, for reduced memory usage.
 
 ## [2.0.1]
 
