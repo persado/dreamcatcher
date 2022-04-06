@@ -3,6 +3,7 @@
  * Updated sentry integration to allow enabling performance tracing.
  * Updated @sentry/node package to 6.19.4; added @sentry/tracing.
  * Updated package-lock lockFileVersion to 2
+ * Updated to puppeteer 13.5.2 and puppeteer-cluster 0.23.0
 
 ## [2.0.1]
 
