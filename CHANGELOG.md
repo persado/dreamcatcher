@@ -2,6 +2,7 @@
 
  * Add config option to enable Sentry's built in Express performance tracing.
  * Add log message reporting the Sentry configuration.
+ * Security: Bump async from 2.6.1 to 2.6.4
 
 ## [2.1.0]
 
