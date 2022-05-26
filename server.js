@@ -83,13 +83,15 @@ const app = express();
 
 const useSentry = !!process.env.SENTRY_DSN;
 if (useSentry) {
+  const useSentryExpress = !!process.env.SENTRY_EXPRESS;
+  const sentryIntegrations = useSentryExpress ? [new Tracing.Integrations.Express({app})] : [];
+  const tracesSampleRate = process.env.SENTRY_TRACES_SAMPLE_RATE ? parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE) : 0;
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
-    integrations: [
-      new Tracing.Integrations.Express({app}),
-    ],
-    tracesSampleRate: (process.env.SENTRY_TRACES_SAMPLE_RATE ? parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE) : 0),
+    integrations: sentryIntegrations,
+    tracesSampleRate,
   });
+  console.log(`Sentry enabled, ${useSentryExpress ? 'with' : 'without'} express integration, sample rate: ${tracesSampleRate}`);
 }
 
 (async () => {

@@ -1,3 +1,8 @@
+## [unreleased]
+
+ * Add config option to enable Sentry's built in Express performance tracing.
+ * Add log message reporting the Sentry configuration.
+
 ## [2.1.0]
 
  * Add omitBackground option for capturing PNGs with transparency.
