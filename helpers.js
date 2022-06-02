@@ -165,7 +165,7 @@ const capturePdf = async (page, options) => {
   if(options.emulateMediaType) {
     await page.emulateMediaType(options.emulateMediaType);
   }
-  return await page.pdf({ ...options.pdfOptions });
+  return await page.createPDFStream({ ...options.pdfOptions });
 };
 
 const handleError = (error, res) => {

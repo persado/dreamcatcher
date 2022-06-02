@@ -47,20 +47,25 @@ const screenshotTask = async ({ page, data: {options, format}}) => {
       name: `screenshot-${format}`,
     });
   }
+  result = await captureImage(page, options);
+  if (useSentry) transaction.finish();
+  return result;
+};
 
+const pipeStream = async (input, output) => {
+  return new Promise(resolve => {
+      input.pipe(output);
+      output.on('finish', () => resolve);
+  });
+};
+
+const pdfStreamTask = async ({ page, data: {options, response}}) => {
   await commonSetup(page, options);
   await prepareContent(page, options);
 
-  let result;
-  if (format === 'pdf') {
-    result = await capturePdf(page, options);
-  } else {
-    result = await captureImage(page, options);
-  }
-  if (useSentry) {
-    transaction.finish();
-  }
-  return result;
+  const pdfStream = await capturePdf(page, options);
+  response.type('application/pdf');
+  return await pipeStream(pdfStream, response);
 };
 
 const performanceTask = async ({ page, data: {options}}) => {
@@ -128,11 +133,36 @@ if (useSentry) {
     res.status(200).send("Dreamcatcher is running.");
   });
 
-  app.post("/export/:format", async (req, res) => {
-    if (!['image', 'pdf'].includes(req.params.format)) {
-      return res.status(422).send('Unsupported format');
-    }
+  app.post("/export/pdf", async (req, res) => {
+    try {
+      const options = prepareOptions(req.body);
 
+      await retry(
+        async () => {
+          await cluster.execute(
+            {options, response: res},
+            pdfStreamTask
+          );
+          return true;
+        },
+        {
+          retries: MAX_RETRIES_WHEN_ERROR,
+          onRetry: (error) => {
+            log('Error during screenshot task:')
+            log(error.stack);
+            if (useSentry) Sentry.captureException(error);
+          }
+        }
+      );
+    } catch (e) {
+      log('Error during pdf task, bailed:')
+      if (useSentry) Sentry.captureException(e);
+      handleError(e, res, Sentry);
+    }
+  });
+
+
+  app.post("/export/image", async (req, res) => {
     try {
       const options = prepareOptions(req.body);
       const payload = await retry(
@@ -152,16 +182,12 @@ if (useSentry) {
         }
       );
 
-      if (req.params.format == 'pdf') {
-        res.type('application/pdf');
+      if (options.imageType == 'png') {
+        res.type("image/png");
+      } else if (options.imageType == 'webp') {
+        res.type('image/webp');
       } else {
-        if (options.imageType == 'png') {
-          res.type("image/png");
-        } else if (options.imageType == 'webp') {
-          res.type('image/webp');
-        } else {
-          res.type('image/jpeg');
-        }
+        res.type('image/jpeg');
       }
       res.send(payload);
     } catch (e) {
