@@ -168,6 +168,17 @@ const capturePdf = async (page, options) => {
   return await page.pdf({ ...options.pdfOptions });
 };
 
+const captureContent = async (page, options) => {
+  log(`Starting Content capture: ${options.url}`);
+  if(options.userAgent) {
+    await page.setUserAgent(options.userAgent)
+  }
+  if(options.emulateMediaType) {
+    await page.emulateMediaType(options.emulateMediaType);
+  }
+  return await page.content();
+};
+
 const handleError = (error, res) => {
   console.error(error.stack);
   res.status(500);
@@ -184,6 +195,7 @@ module.exports = {
   prepareContent,
   capturePdf,
   captureImage,
+  captureContent,
   handleError,
   isPrivateNetwork,
 };
