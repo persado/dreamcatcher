@@ -4,14 +4,16 @@ title: performance
 id: performance
 ---
 
-## `POST /performance`
+```
+POST /performance
+```
 
-**Parameters (JSON):**
+# Parameters
 
-- **url:** string - Target URL to capture.
-- **htmlContent:** string - HTML to render directly and capture. If this field is present, any value of `url` will be ignored.
+- `url`: string - Target URL to capture.
+- `htmlContent`: string - HTML to render directly and capture. If this field is present, any value of `url` will be ignored.
 
-**Return value**
+# Response
 
 This method returns an object with two properties:
 

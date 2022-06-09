@@ -6,10 +6,12 @@ title: Features
 Dreamcatcher is a node.js project that provides a lightweight API for generating
 Image and PDF representations of a web page. MIT licensed.
 
- * Simple HTTP API.
+ * Straightforward HTTP API.
  * The source can be a provided as an HTML snippet or a URL.
- * The image output can be JPEG, PNG or WebP images. You can specify the JPEG image quality.
- * The PDF output can be customized per Puppeteer's options.
+ * The response can be one of
+   * Image: JPEG, PNG or WebP images. You can specify the JPEG image quality.
+   * PDF: The PDF output can be customized per Puppeteer's options.
+   * HTML: The html source can be returned.
  * The scale can be set to 2&times; (for HiDPI) or to 1&times; (normal).
  * You can request the whole page or part of it, based on a provided selector.
  * You can wait for a certain time to pass, for a selector to appear, or both.
@@ -26,3 +28,6 @@ Dreamcatcher is built on the shoulders of giants:
  * [Puppeteer Cluster](https://github.com/thomasdondorf/puppeteer-cluster) by
   [Thomas Dondorf](https://github.com/thomasdondorf)
 
+# Related Projects
+
+ * [Browserless](https://www.browserless.io/)

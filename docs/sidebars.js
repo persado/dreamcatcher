@@ -24,5 +24,6 @@ module.exports = {
         'api/status',
       ],
     },
+    'tips',
   ],
 };

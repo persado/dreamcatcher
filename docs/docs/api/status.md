@@ -4,6 +4,10 @@ title: status
 id: status
 ---
 
-## `GET /status`
+```
+GET /status
+```
 
-**Returns:** Status code `200 OK`
+# Response
+
+Status code `200 OK`
