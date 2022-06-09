@@ -15,6 +15,7 @@ const {
   measureContent,
   capturePdf,
   captureImage,
+  captureContent,
   isPrivateNetwork,
 } = require("./helpers");
 
@@ -52,7 +53,9 @@ const screenshotTask = async ({ page, data: {options, format}}) => {
   await prepareContent(page, options);
 
   let result;
-  if (format === 'pdf') {
+  if (format === 'content') {
+    result = await captureContent(page, options);
+  } else if (format === 'pdf') {
     result = await capturePdf(page, options);
   } else {
     result = await captureImage(page, options);
@@ -129,7 +132,7 @@ if (useSentry) {
   });
 
   app.post("/export/:format", async (req, res) => {
-    if (!['image', 'pdf'].includes(req.params.format)) {
+    if (!['image', 'pdf', 'content'].includes(req.params.format)) {
       return res.status(422).send('Unsupported format');
     }
 
@@ -152,11 +155,13 @@ if (useSentry) {
         }
       );
 
-      if (req.params.format == 'pdf') {
+      if (req.params.format == 'content') {
+        res.type('text/html');
+      } else if (req.params.format == 'pdf') {
         res.type('application/pdf');
       } else {
         if (options.imageType == 'png') {
-          res.type("image/png");
+          res.type('image/png');
         } else if (options.imageType == 'webp') {
           res.type('image/webp');
         } else {
