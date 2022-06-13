@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.2.0]
 
  * Update to Puppeteer 14.3.0 (Chromium 102)
  * New endpoint `/export/content` that returns the HTML source.
