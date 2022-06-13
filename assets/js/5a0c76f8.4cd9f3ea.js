@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[386],{5578:function(a){a.exports=JSON.parse('[{"label":"hola","permalink":"/dreamcatcher/blog/tags/hola","count":1},{"label":"docusaurus","permalink":"/dreamcatcher/blog/tags/docusaurus","count":1}]')}}]);

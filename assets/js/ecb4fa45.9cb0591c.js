@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[946],{6571:function(a){a.exports=JSON.parse('{"allTagsPath":"/dreamcatcher/blog/tags","name":"docusaurus","count":1,"permalink":"/dreamcatcher/blog/tags/docusaurus"}')}}]);
