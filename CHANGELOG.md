@@ -1,6 +1,6 @@
 ## [unreleased]
 
- * Update to Puppeteer 14.1.2 (Chromium 102)
+ * Update to Puppeteer 14.3.0 (Chromium 102)
  * New endpoint `/export/content` that returns the HTML source.
  * Add config option to enable Sentry's built in Express performance tracing.
  * Add log message reporting the Sentry configuration.
