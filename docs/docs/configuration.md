@@ -11,6 +11,7 @@ The following optional environment variables are available for configuration:
 
 ### General Settings
 
+- **PUPPETEER_ARGS:** (Default: `--no-sandbox,--disable-setuid-sandbox,--disable-dev-shm-usage`) Comma-separated arguments to pass to puppeteer's launch command.
 - **CONCURRENCY:** (Default: `20`) The maximum number of puppeteer-cluster workers, or roughly concurrent requests. Requests over the limit will be added to a queue. Decrease this if you experience performance problems during peak load.
 - **PORT:** (Default: `8080`) The port Dreamcatcher will listen to for requests.
 - **ALLOW_PRIVATE_NETWORKS:** (Default: `undefined`) Dreamcatcher blocks any requests (e.g. images, CSS) to private networks / IPs by default. Pass this env var with value `true` in order to allow such requests. (This only applies to IPv4 IP addresses; hostnames that resolve to local addresses will still pass through)

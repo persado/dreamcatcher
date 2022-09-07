@@ -94,22 +94,23 @@ if (useSentry) {
     integrations: sentryIntegrations,
     tracesSampleRate,
   });
-  console.log(`Sentry enabled, ${useSentryExpress ? 'with' : 'without'} express integration, sample rate: ${tracesSampleRate}`);
+  log(`Sentry enabled, ${useSentryExpress ? 'with' : 'without'} express integration, sample rate: ${tracesSampleRate}`);
+} else {
+  log(`Sentry disabled.`)
 }
 
 (async () => {
+  const args = process.env.PUPPETEER_ARGS ? process.env.PUPPETEER_ARGS.split(',') : ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'];
+  const maxConcurrency = process.env.CONCURRENCY ? parseInt(process.env.CONCURRENCY) : 15;
+
+  log(`Cluster options: Concurrency: ${Cluster.CONCURRENCY_CONTEXT}, maxConcurrency: ${maxConcurrency}`);
+  log(`Puppeteer options: ${args.join(' ')}`);
+
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
-    maxConcurrency: process.env.CONCURRENCY ? parseInt(process.env.CONCURRENCY) : 15,
+    maxConcurrency,
     monitor: process.env.MONITOR ? true : false,
-    puppeteerOptions: {
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-web-security",
-      ],
-    },
+    puppeteerOptions: { args },
   });
 
   if (useSentry) app.use(Sentry.Handlers.requestHandler());
