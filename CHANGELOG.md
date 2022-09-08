@@ -1,3 +1,10 @@
+## [unreleased]
+
+ * Update to Puppeteer 17.1.2.
+ * Make puppeteer launch options configurable via PUPPETEER_ARGS.
+ * Remove the option --disable-web-security by default.
+ * Add additional logging during start.
+
 ## [2.2.0]
 
  * Update to Puppeteer 14.3.0 (Chromium 102)

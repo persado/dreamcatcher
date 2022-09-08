@@ -7,7 +7,7 @@
     "start": "node start.js",
     "debug": "node --nolazy start.js",
     "inspect": "node --nolazy --inspect start.js",
-    "test": "./node_modules/.bin/mocha",
+    "test": "PUPPETEER_ARGS=--no-sandbox,--disable-setuid-sandbox,--disable-dev-shm-usage,--disable-web-security ./node_modules/.bin/mocha test",
     "test-with-coverage": "./node_modules/.bin/nyc --reporter=text --reporter=html mocha"
   },
   "dependencies": {
@@ -22,7 +22,7 @@
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "on-finished": "^2.3.0",
-    "puppeteer": "^14.3.0",
+    "puppeteer": "^17.1.2",
     "puppeteer-cluster": "^0.23.0",
     "url": "^0.11.0"
   },
