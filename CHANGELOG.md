@@ -1,9 +1,11 @@
 ## [unreleased]
 
- * Update to Puppeteer 19.0.0.
+ * Update to Puppeteer 20.2.1.
  * Make puppeteer launch options configurable via PUPPETEER_ARGS.
+ * Launch puppeteer browser with new headless mode.
  * Remove the option --disable-web-security by default.
  * Add additional logging during start.
+ * Update dependencies (express, async, sentry, docosaurus)
 
 ## [2.2.0]
 

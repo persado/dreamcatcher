@@ -43,7 +43,7 @@ module.exports = {
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright © 2022 Persado, Inc. Docs built with <a href="https://docusaurus.io/" target="_blank">Docusaurus</a>. Icon by <a href="https://www.freepik.com" title="Freepik" target="_blank">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">FlatIcon.com</a>.`,
+      copyright: `Copyright © 2023 Persado, Inc. Docs built with <a href="https://docusaurus.io/" target="_blank">Docusaurus</a>. Icon by <a href="https://www.freepik.com" title="Freepik" target="_blank">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">FlatIcon.com</a>.`,
     },
   },
   presets: [
