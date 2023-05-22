@@ -1,4 +1,4 @@
-## [unreleased]
+## [2.3.0]
 
  * Update to Puppeteer 20.2.1.
  * Make puppeteer launch options configurable via PUPPETEER_ARGS.
