@@ -22,6 +22,13 @@ const {
 
 const MAX_RETRIES_WHEN_ERROR = 3;
 
+const DEFAULT_PUPPETEER_ARGS = [
+  '--headless=new',
+  '--no-sandbox',
+  '--disable-setuid-sandbox',
+  '--disable-dev-shm-usage',
+];
+
 const commonSetup = async (page, options) => {
   if (process.env.ALLOW_PRIVATE_NETWORKS !== 'true') {
     await page.setRequestInterception(true);
@@ -100,7 +107,10 @@ if (useSentry) {
 }
 
 (async () => {
-  const args = process.env.PUPPETEER_ARGS ? process.env.PUPPETEER_ARGS.split(',') : ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'];
+  const args = process.env.PUPPETEER_ARGS ?
+    process.env.PUPPETEER_ARGS.split(',') :
+    DEFAULT_PUPPETEER_ARGS;
+
   const maxConcurrency = process.env.CONCURRENCY ? parseInt(process.env.CONCURRENCY) : 15;
 
   log(`Cluster options: Concurrency: ${Cluster.CONCURRENCY_CONTEXT}, maxConcurrency: ${maxConcurrency}`);
@@ -110,7 +120,10 @@ if (useSentry) {
     concurrency: Cluster.CONCURRENCY_CONTEXT,
     maxConcurrency,
     monitor: process.env.MONITOR ? true : false,
-    puppeteerOptions: { args },
+    puppeteerOptions: {
+      args,
+      headless: 'new',
+    },
   });
 
   if (useSentry) app.use(Sentry.Handlers.requestHandler());
