@@ -1,3 +1,7 @@
+## [2.4.0]
+
+* Customise puppeteer timeout via TIMEOUT environment variable
+
 ## [2.3.0]
 
  * Update to Puppeteer 20.2.1.

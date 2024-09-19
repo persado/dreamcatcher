@@ -16,6 +16,7 @@ The following optional environment variables are available for configuration:
 - **PORT:** (Default: `8080`) The port Dreamcatcher will listen to for requests.
 - **ALLOW_PRIVATE_NETWORKS:** (Default: `undefined`) Dreamcatcher blocks any requests (e.g. images, CSS) to private networks / IPs by default. Pass this env var with value `true` in order to allow such requests. (This only applies to IPv4 IP addresses; hostnames that resolve to local addresses will still pass through)
 - **MONITOR** (default: `undefined`) If defined, logging to stdout is suppressed and instead you get the monitoring provided by `puppeteer-cluster`. Try with `MONITOR=1 npm run start`.
+- **TIMEOUT** (default: `30000`) The maximum time Puppeteer will run before timing out
 
 ### Sentry Integration
 
