@@ -112,13 +112,15 @@ if (useSentry) {
     DEFAULT_PUPPETEER_ARGS;
 
   const maxConcurrency = process.env.CONCURRENCY ? parseInt(process.env.CONCURRENCY) : 15;
+  const timeout = process.env.TIMEOUT ? parseInt(process.env.TIMEOUT) : 30000;
 
-  log(`Cluster options: Concurrency: ${Cluster.CONCURRENCY_CONTEXT}, maxConcurrency: ${maxConcurrency}`);
+  log(`Cluster options: Concurrency: ${Cluster.CONCURRENCY_CONTEXT}, maxConcurrency: ${maxConcurrency}, timeout: ${timeout}`);
   log(`Puppeteer options: ${args.join(' ')}`);
 
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
     maxConcurrency,
+    timeout,
     monitor: process.env.MONITOR ? true : false,
     puppeteerOptions: {
       args,
