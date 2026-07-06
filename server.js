@@ -23,7 +23,6 @@ const {
 const MAX_RETRIES_WHEN_ERROR = 3;
 
 const DEFAULT_PUPPETEER_ARGS = [
-  '--headless=new',
   '--no-sandbox',
   '--disable-setuid-sandbox',
   '--disable-dev-shm-usage',
@@ -124,7 +123,7 @@ if (useSentry) {
     monitor: process.env.MONITOR ? true : false,
     puppeteerOptions: {
       args,
-      headless: 'new',
+      headless: true,
     },
   });
 
