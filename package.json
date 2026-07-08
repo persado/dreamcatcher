@@ -1,8 +1,11 @@
 {
   "name": "dreamcatcher",
   "description": "Dreamcatcher - Image/PDF exporter using Puppeteer",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "private": false,
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "node start.js",
     "debug": "node --nolazy start.js",
@@ -22,16 +25,15 @@
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "on-finished": "^2.3.0",
-    "puppeteer": "^20.2.1",
-    "puppeteer-cluster": "^0.23.0",
+    "puppeteer": "^24.0.0",
+    "puppeteer-cluster": "^0.24.0",
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "autocannon": "^7.4.0",
+    "autocannon": "^8.0.0",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
-    "mocha": "^10.2.0",
-    "node-static": "^0.7.11",
-    "nyc": "^15.1.0"
+    "mocha": "^11.7.6",
+    "nyc": "^18.0.0"
   }
 }

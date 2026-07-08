@@ -29,10 +29,11 @@ const wait = async (page, options) => {
   for (let i = 0; i < options.waitFor.length; i++) {
     const condition = options.waitFor[i];
 
-    // Uses either waitForTimeout or waitForSelector because options.waitFor[i]
-    // could only either be a String selector OR Integer time in milliseconds
+    // Uses either a plain timeout or waitForSelector because options.waitFor[i]
+    // could only either be a String selector OR Integer time in milliseconds.
+    // Note: page.waitForTimeout() was removed in puppeteer 22.
     if (parseInt(condition)) {
-      await page.waitForTimeout(parseInt(condition));
+      await new Promise((resolve) => setTimeout(resolve, parseInt(condition)));
     }else{
       await page.waitForSelector(condition, { timeout: options.waitTimeout });
     }
@@ -152,11 +153,13 @@ const captureImage = async (page, options) => {
       imageOptions.clip = await element.boundingBox();
     }
 
-    return await element.screenshot(imageOptions);
+    // Wrap in a Buffer so Express sends raw binary; puppeteer's documented
+    // return type is Uint8Array (see capturePdf note).
+    return Buffer.from(await element.screenshot(imageOptions));
   }
 
   imageOptions = merge(imageOptions, nonSelectorOptions);
-  return await page.screenshot(imageOptions);
+  return Buffer.from(await page.screenshot(imageOptions));
 };
 
 const capturePdf = async (page, options) => {
@@ -165,7 +168,9 @@ const capturePdf = async (page, options) => {
   if(options.emulateMediaType) {
     await page.emulateMediaType(options.emulateMediaType);
   }
-  return await page.pdf({ ...options.pdfOptions });
+  // puppeteer >=23 returns a Uint8Array; wrap in a Buffer so Express sends it as
+  // raw binary instead of JSON-serializing it into a corrupt file.
+  return Buffer.from(await page.pdf({ ...options.pdfOptions }));
 };
 
 const captureContent = async (page, options) => {
