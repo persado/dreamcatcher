@@ -3,6 +3,9 @@
   "description": "Dreamcatcher - Image/PDF exporter using Puppeteer",
   "version": "2.4.0",
   "private": false,
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "node start.js",
     "debug": "node --nolazy start.js",

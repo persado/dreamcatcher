@@ -2,6 +2,7 @@
 
 * Upgrade to Puppeteer 24 (modern Chrome) to fix corrupted PDF/image exports.
 * Switch browser launch to `headless: true` (new headless mode); drop the redundant `--headless=new` arg.
+* Require Node.js 18+ (tested on Node 24 LTS).
 * Customise puppeteer timeout via TIMEOUT environment variable
 
 ## [2.3.0]
