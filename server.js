@@ -5,7 +5,6 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const retry = require('async-retry');
 const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
 const { Cluster } = require('puppeteer-cluster');
 const {
   log,
@@ -93,7 +92,7 @@ const app = express();
 const useSentry = !!process.env.SENTRY_DSN;
 if (useSentry) {
   const useSentryExpress = !!process.env.SENTRY_EXPRESS;
-  const sentryIntegrations = useSentryExpress ? [new Tracing.Integrations.Express({app})] : [];
+  const sentryIntegrations = useSentryExpress ? [new Sentry.Integrations.Express({app})] : [];
   const tracesSampleRate = process.env.SENTRY_TRACES_SAMPLE_RATE ? parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE) : 0;
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
