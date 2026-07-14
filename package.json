@@ -14,8 +14,7 @@
     "test-with-coverage": "./node_modules/.bin/nyc --reporter=text --reporter=html mocha"
   },
   "dependencies": {
-    "@sentry/node": "^7.52.1",
-    "@sentry/tracing": "^7.52.1",
+    "@sentry/node": "^7.120.4",
     "async": "^3.2.4",
     "async-retry": "^1.3.3",
     "body-parser": "^1.19.0",
